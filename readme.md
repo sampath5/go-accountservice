@@ -15,5 +15,5 @@ POST:  /account
 
 	}
 
-GET: /account/{id}
+GET: /account/{customerid}
 	
