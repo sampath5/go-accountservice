@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
@@ -76,7 +75,7 @@ func (s accountservice) GetCustomerById(ctx context.Context, id int) (string, er
 }
 func (s accountservice) GetAllCustomers(ctx context.Context) (interface{}, error) {
 	logger := log.With(s.logger, "method", "GetCustomerById")
-	fmt.Println("into Get AllCustomers service code")
+	// fmt.Println("into Get AllCustomers service code")
 	var email interface{}
 
 	email, err := s.repository.GetAllCustomers(ctx)

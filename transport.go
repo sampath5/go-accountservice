@@ -61,7 +61,7 @@ func decodeCreateCustomerRequest(_ context.Context, r *http.Request) (interface{
 
 func decodeGetCustomerByIdRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var req GetCustomerByIdRequest
-	fmt.Println("--------->>>>Into decoding")
+	// fmt.Println("--------->>>>Into decoding")
 	vars := mux.Vars(r)
 	req = GetCustomerByIdRequest{
 		Id: vars["id"],
@@ -70,14 +70,14 @@ func decodeGetCustomerByIdRequest(_ context.Context, r *http.Request) (interface
 }
 func decodeGetAllCustomersRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var req GetAllCustomersRequest
-	fmt.Println("--------->>>>Into GetAllCustomers decoding")
+	// fmt.Println("--------->>>>Into GetAllCustomers decoding")
 	return req, nil
 }
 
 //  encodes the output
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	fmt.Println("into Encoding <<<<<<----------------")
+	// fmt.Println("into Encoding <<<<<<----------------")
 	return json.NewEncoder(w).Encode(response)
 }
 
