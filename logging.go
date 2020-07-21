@@ -40,3 +40,16 @@ func (mw loggingMiddleware) GetCustomerById(ctx context.Context, id int) (Email 
 	Email, Err = mw.next.GetCustomerById(ctx, id)
 	return
 }
+func (mw loggingMiddleware) GetAllCustomers(ctx context.Context) (Email interface{}, Err error) {
+	defer func(begin time.Time) {
+
+		_ = mw.logger.Log(
+			"method", "GetAllCustomers",
+			"err", Err,
+			"took", time.Since(begin),
+		)
+	}(time.Now())
+
+	Email, Err = mw.next.GetAllCustomers(ctx)
+	return
+}

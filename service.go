@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
@@ -19,6 +20,7 @@ type Customer struct {
 type Repository interface {
 	CreateCustomer(ctx context.Context, customer Customer) error
 	GetCustomerById(ctx context.Context, id int) (string, error)
+	GetAllCustomers(ctx context.Context) (interface{}, error)
 }
 
 // service implements the ACcount Service
@@ -31,6 +33,7 @@ type accountservice struct {
 type AccountService interface {
 	CreateCustomer(ctx context.Context, customer Customer) (string, error)
 	GetCustomerById(ctx context.Context, id int) (string, error)
+	GetAllCustomers(ctx context.Context) (interface{}, error)
 }
 
 // NewService creates and returns a new Account service instance
@@ -70,4 +73,17 @@ func (s accountservice) GetCustomerById(ctx context.Context, id int) (string, er
 		return "", err
 	}
 	return email, nil
+}
+func (s accountservice) GetAllCustomers(ctx context.Context) (interface{}, error) {
+	logger := log.With(s.logger, "method", "GetCustomerById")
+	fmt.Println("into Get AllCustomers service code")
+	var email interface{}
+
+	email, err := s.repository.GetAllCustomers(ctx)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+	return email, nil
+
 }

@@ -65,6 +65,11 @@ func main() {
 		decodeGetCustomerByIdRequest,
 		encodeResponse,
 	)
+	GetAllCustomersHandler := httptransport.NewServer(
+		makeGetAllCustomersEndpoint(svc),
+		decodeGetAllCustomersRequest,
+		encodeResponse,
+	)
 
 	// r.Handle("/hello", )
 
@@ -73,7 +78,9 @@ func main() {
 	http.Handle("/", r)
 	http.Handle("/account", CreateAccountHandler)
 	//r.Methods("GET").Path("/hello").Handler(HelloHandler)
+	r.Handle("/account/getAll", GetAllCustomersHandler).Methods("GET")
 	r.Handle("/account/{id}", GetByIdHandler).Methods("GET")
+
 	// http.Handle("/account/:{}", GetByIdHandler)
 	http.Handle("/metrics", promhttp.Handler())
 	logger.Log("msg", "HTTP", "addr", ":8000")

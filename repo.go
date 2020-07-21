@@ -47,3 +47,15 @@ func (repo *repo) GetCustomerById(ctx context.Context, id int) (string, error) {
 	}
 	return email.Email, nil
 }
+func (erpo *repo) GetAllCustomers(ctx context.Context) (interface{}, error) {
+	coll := db.C(UserCollection)
+	email := []Customer{}
+	fmt.Println("into Get AllCustomers repo code")
+	err := coll.Find(bson.M{}).Select(bson.M{"id": 1, "customerid": 1, "email": 1, "phone": 1}).All(&email)
+
+	if err != nil {
+		fmt.Println("Error occured inside GetCUstomerById in repo")
+		return "", err
+	}
+	return email, nil
+}

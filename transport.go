@@ -26,7 +26,9 @@ func makeCreateCustomerEndpoint(s AccountService) endpoint.Endpoint {
 func makeGetCustomerByIdEndpoint(s AccountService) endpoint.Endpoint {
 	fmt.Println("into makeendpoint")
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
+
 		req := request.(GetCustomerByIdRequest)
+		fmt.Println("in make line 31")
 		id, er := strconv.Atoi(req.Id)
 		if er != nil {
 			return GetCustomerByIdResponse{Email: "", Err: er}, nil
@@ -35,6 +37,18 @@ func makeGetCustomerByIdEndpoint(s AccountService) endpoint.Endpoint {
 		return GetCustomerByIdResponse{Email: email, Err: err}, nil
 	}
 
+}
+func makeGetAllCustomersEndpoint(s AccountService) endpoint.Endpoint {
+	fmt.Println("into makeendpoint")
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+
+		// return GetCustomerByIdResponse{Email: "", Err: nil}, nil
+		// req := request.(GetAllCustomersRequest)
+
+		fmt.Println("in make ")
+		email, err := s.GetAllCustomers(ctx)
+		return GetAllCustomersResponse{Email: email, Err: err}, nil
+	}
 }
 
 func decodeCreateCustomerRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -47,16 +61,23 @@ func decodeCreateCustomerRequest(_ context.Context, r *http.Request) (interface{
 
 func decodeGetCustomerByIdRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var req GetCustomerByIdRequest
+	fmt.Println("--------->>>>Into decoding")
 	vars := mux.Vars(r)
 	req = GetCustomerByIdRequest{
 		Id: vars["id"],
 	}
 	return req, nil
 }
+func decodeGetAllCustomersRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req GetAllCustomersRequest
+	fmt.Println("--------->>>>Into GetAllCustomers decoding")
+	return req, nil
+}
 
 //  encodes the output
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	fmt.Println("into Encoding <<<<<<----------------")
 	return json.NewEncoder(w).Encode(response)
 }
 
@@ -74,5 +95,13 @@ type (
 	GetCustomerByIdResponse struct {
 		Email string `json:"email"`
 		Err   error  `json:"error,omitempty"`
+	}
+	GetAllCustomersRequest struct {
+	}
+	GetAllCustomersResponse struct {
+		// Id       string `json:"id"`
+		Email interface{} `json:"customer"`
+		// Phonenum string `json:"phone"`
+		Err error `json:"error,omitempty"`
 	}
 )
